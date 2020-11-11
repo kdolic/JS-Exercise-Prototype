@@ -39,9 +39,33 @@ Airplane.prototype.land = function () {
         + It should return a string with `name` and `age`. Example: "Mary, 50"
 */
 
-function Person() {
-
+function Person(name, age) {
+  this.name = name;
+  this.age = age;
+  this.stomach = [];
 }
+
+Person.prototype.eat = function(edible){
+  if(this.stomach.length < 10){
+    this.stomach.push(edible);
+  }
+}
+
+Person.prototype.poop = function(){
+  this.stomach = [];
+}
+
+Person.prototype.toString = function(){
+  return `${this.name}, ${this.age}`;
+}
+
+const personOne = new Person('Jakobi', 20);
+const personTwo = new Person('Leah', 29);
+const personThree = new Person('Karla', 24);
+
+console.log(personOne.toString());
+console.log(personTwo.toString());
+console.log(personThree.toString());
 
 /*
   TASK 2
@@ -57,8 +81,20 @@ function Person() {
         + The `drive` method should return a string "I ran out of fuel at x miles!" x being `odometer`.
 */
 
-function Car() {
+function Car(model, milesPerGallon) {
+  this.model = model;
+  this.milesPerGallon = milesPerGallon;
+  this.tank = 0;
+  this.odometer = 0;
+}
 
+Car.prototype.fill = function(gallons){
+  this.tank += gallons;
+}
+
+Car.prototype.drive = function(distance){
+   this.odometer += distance;
+   this.tank = this.tank - this.milesPerGallon;
 }
 
 /*
@@ -68,18 +104,35 @@ function Car() {
     - Besides the methods on Person.prototype, babies have the ability to `.play()`:
         + Should return a string "Playing with x", x being the favorite toy.
 */
-function Baby() {
 
+function Baby(name, age, favoriteToy) {
+  Person.call(this, name, age)
+  this.favoriteToy = favoriteToy;
 }
+
+Baby.prototype = Object.create(Person.prototype);
+
+Baby.prototype.play = function(){
+  return (`Playing with ${this.favoriteToy}`);
+}
+
+const babyOne = new Baby({
+  name: 'Kenan', 
+  age: 2,
+  favoriteToy:'trains'
+});
+
+babyOne.play();
+
 
 /* 
   TASK 4
 
   In your own words explain the four principles for the "this" keyword below:
-  1. 
-  2. 
-  3. 
-  4. 
+  1.  Window Binding - not something that is supposed to be used. If we provide "this" then it will go to the window or global object, unless in strict mode(will be undefined)
+  2.  Implicit Binding - most common/ highly used, after the function is invoked, look left of the fot to see what what the "this" is refering to, only for object with methods inside
+  3.  Explicit Binding - three ways: .call(), .apply(), .bind().. .call you pass in your arguments 1 by 1, .apply you pass in your arguments as an array, .bind() returns a new func
+  4.  New Binding - using the "new" keyword to construct a new object and "this" points directly to that object, when invoked the "this" within the new keyword points to that object
 */
 
 
